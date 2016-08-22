@@ -117,11 +117,15 @@ func TestEvaluateWikipedia(t *testing.T) {
 	r4c3.AddTerminal(6, "")
 
 	r1.Evaluate()
+
 	if r1.Score == nil {
 		t.Error("Score not evaluated")
 	} else if *r1.Score != 6 {
 		t.Error("Evaluate failed: ", *r1.Score)
 	}
+
+	r1.GetBestChildNode()
+	r1.Print(0)
 }
 
 func TestEvaluateYouTube(t *testing.T) {
@@ -158,5 +162,21 @@ func TestEvaluateYouTube(t *testing.T) {
 		fmt.Println("SAME")
 	} else {
 		fmt.Println("DIFFERENT")
+	}
+}
+
+// Test as per https://en.wikipedia.org/wiki/Minimax#/media/File:Plminmax.gif
+func TestIsTerminal(t *testing.T) {
+	r1 := New()
+	node := r1.AddTerminal(1, nil)
+
+	if !node.isTerminal() {
+		t.Error("Node should be a terminal node")
+	}
+
+	r1.Add(nil)
+
+	if r1.isTerminal() {
+		t.Error("R1 should not be a terminal node")
 	}
 }
